@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Commodore Character Screen Generator</title>
+    <style>
+        .grid-input {
+            width: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="inputGrid"></div>
+    <button id="createCSVButton">Create Data Outputs</button>
+    <h3>Character Data:</h3>
+    <pre id="csv1Output"></pre>
+    <h3>Color Data:</h3>
+    <pre id="csv2Output"></pre>
+
+    <script>
+        // Constants for the grid size
+        const rows = 25;
+        const cols = 40;
+
+        // Generate the grid of inputs
+        let gridHTML = '';
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                gridHTML += `<input type="text" maxlength="2" id="input-${i}-${j}" class="grid-input">`;
+            }
+            gridHTML += '<br>';
+        }
+        document.getElementById('inputGrid').innerHTML = gridHTML;
+
+        // Attach a click event listener to the Create CSV button
+        document.getElementById('createCSVButton').addEventListener('click', function() {
+            let csv1 = '';
+            let csv2 = '';
+            for (let i = 0; i < rows; i++) {
+                let row1 = '.byte ';
+                let row2 = '.byte ';
+                for (let j = 0; j < cols; j++) {
+                    let value = document.getElementById(`input-${i}-${j}`).value;
+                    row1 += (value[0] || '0') + ',';
+                    row2 += (value[1] || '0') + ',';
+                }
+                csv1 += row1.slice(0, -1) + '\n';  // Remove last comma and add a new line
+                csv2 += row2.slice(0, -1) + '\n'; 
+            }
+            // Output the CSVs
+            document.getElementById('csv1Output').textContent = csv1;
+            document.getElementById('csv2Output').textContent = csv2;
+        });
+    </script>
+</body>
+</html>
